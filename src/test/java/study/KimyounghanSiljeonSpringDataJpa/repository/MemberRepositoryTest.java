@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import study.KimyounghanSiljeonSpringDataJpa.entity.Member;
+import study.KimyounghanSiljeonSpringDataJpa.entity.Team;
 
 import java.util.List;
 
@@ -19,6 +20,9 @@ class MemberRepositoryTest {
 
   @Autowired
   MemberRepository memberRepository;
+
+  @Autowired
+  TeamRepository teamRepository;
 
 
   @Test
@@ -92,5 +96,29 @@ class MemberRepositoryTest {
     Assertions.assertThat(members.get(0)).isEqualTo(member1);
   }
 
+  @Test
+  void findUsernameList() {
+    Member member1 = new Member("AAA", 10);
+    Member member2 = new Member("BBB", 20);
+    memberRepository.save(member1);
+    memberRepository.save(member2);
+
+    memberRepository.findUsernameList().forEach(s -> {
+      System.out.println("username = " + s);
+    });
+  }
+
+  @Test
+  void findMemberDto() {
+    Team team = new Team("teamA");
+    teamRepository.save(team);
+
+    Member member1 = new Member("AAA", 10, team);
+    memberRepository.save(member1);
+
+    memberRepository.findMemberDto().forEach(m -> {
+      System.out.println("MemberDto = " + m);
+    });
+  }
 
 }
