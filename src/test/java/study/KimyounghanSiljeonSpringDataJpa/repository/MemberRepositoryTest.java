@@ -121,4 +121,15 @@ class MemberRepositoryTest {
     });
   }
 
+  @Test
+  void findByNames() {
+    Member member1 = new Member("AAA", 10);
+    Member member2 = new Member("BBB", 20);
+    memberRepository.save(member1);
+    memberRepository.save(member2);
+
+    memberRepository.findByNames(List.of("AAA", "BBB"))
+                    .forEach(m -> System.out.println("Member = " + m));
+  }
+
 }
