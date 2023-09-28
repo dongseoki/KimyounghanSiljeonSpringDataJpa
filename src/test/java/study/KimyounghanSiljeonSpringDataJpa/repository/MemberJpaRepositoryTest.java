@@ -1,5 +1,7 @@
 package study.KimyounghanSiljeonSpringDataJpa.repository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +22,9 @@ class MemberJpaRepositoryTest {
 
   @Autowired
   MemberJpaRepository memberJpaRepository;
+
+  @PersistenceContext
+  private EntityManager em;
 
 
   @Test
@@ -69,6 +74,28 @@ class MemberJpaRepositoryTest {
     assertThat(members.size()).isEqualTo(1);
     assertThat(members.get(0).getUsername()).isEqualTo("AAA");
     assertThat(members.get(0).getAge()).isEqualTo(20);
+  }
+
+  @Test
+  void testNamedQuery_byDsLee(){
+    // 네임드 쿼리 테스트. 유저네임으로 1명을 저장하고 해당 쿼리를 실행해보고, 적절한 유저를 불렀는지 확인.
+
+    //g userDsLee 저장되어있음.
+    //w userDeLee를 찾는 네임드 쿼리 실행
+    //t 그 결과의 이름이 userDsLee임.
+
+    //given
+    Member dslee = new Member("userDsLee");
+    memberJpaRepository.save(dslee);
+    em.flush();
+    em.clear();
+
+    //when
+    List<Member> result = memberJpaRepository.findByUsername("userDsLee");
+
+    //then
+    assertThat(result.size()).isEqualTo(1);
+    assertThat(result.get(0).getUsername()).isEqualTo("userDsLee");
   }
 
 }

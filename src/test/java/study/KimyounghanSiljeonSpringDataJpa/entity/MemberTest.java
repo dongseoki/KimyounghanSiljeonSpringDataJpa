@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,4 +50,44 @@ class MemberTest {
     });
   }
 
+
+  @Test
+  void testEntit23234423y() {
+
+//    int[][] answer = merge(new int[][]{{1, 3}, {2, 6}, {8, 10}, {15, 18}});
+    int[][] answer = merge(new int[][]{{1, 4}, {2, 3}});
+    for (int[] ints : answer) {
+      System.out.println(Arrays.toString(ints));
+    }
+  }
+
+  public int[][] merge(int[][] intervals) {
+    Arrays.sort(intervals, new Comparator<int[]>() {
+      @Override
+      public int compare(int[] o1, int[] o2) {
+        return o1[0] - o2[0];
+      }
+    });
+    int nOStartNum = intervals[0][0];
+    int nOEndNum = intervals[0][1];
+    int idx = 1;
+    List<int[]> answer = new ArrayList();
+    while(idx < intervals.length) {
+      int startNum = intervals[idx][0];
+      int endNum = intervals[idx][1];
+      if (nOEndNum >= startNum) {
+        nOEndNum = Math.max(nOEndNum, endNum);
+      }else {
+        answer.add(new int[]{nOStartNum, nOEndNum});
+        // 겹치지 않아 새로운 묶음 확인.
+        nOStartNum = startNum;
+        nOEndNum = endNum;
+      }
+      idx++;
+    }
+    answer.add(new int[]{nOStartNum, nOEndNum});
+    return answer.toArray(new int[][]{});
+
+
+  }
 }
