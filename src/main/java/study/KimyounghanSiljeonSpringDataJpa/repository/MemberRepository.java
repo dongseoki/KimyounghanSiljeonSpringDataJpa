@@ -9,6 +9,7 @@ import study.KimyounghanSiljeonSpringDataJpa.entity.Member;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -30,5 +31,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
   @Query("select m from Member m where m.username in :names")
   List<Member> findByNames(@Param("names") Collection<String> usernames);
+
+  List<Member> findMembersByUsername(String name);
+
+  Member findMemberByUsername(String name);
+
+  Optional<Member> findOptionalMemberByUsername(String name);
 
 }
