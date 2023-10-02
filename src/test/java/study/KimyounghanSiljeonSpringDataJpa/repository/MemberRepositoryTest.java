@@ -1,6 +1,8 @@
 package study.KimyounghanSiljeonSpringDataJpa.repository;
 
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ class MemberRepositoryTest {
 
   @Autowired
   TeamRepository teamRepository;
+
+  @PersistenceContext
+  EntityManager em;
 
 
   @Test
@@ -260,6 +265,34 @@ class MemberRepositoryTest {
 
     List<Member> members = memberRepository.findByUsername("member3");
     Assertions.assertThat(members.get(0).getAge()).isEqualTo(21);
+  }
+
+  @Test
+  void findMemberLazy() {
+    Team teamA = new Team("teamA");
+    Team teamB = new Team("teamB");
+    teamRepository.save(teamA);
+    teamRepository.save(teamB);
+
+    memberRepository.save(new Member("member1", 10, teamA));
+    memberRepository.save(new Member("member1", 10, teamB));
+    memberRepository.save(new Member("member2", 10, teamB));
+
+    em.flush();
+    em.clear();
+
+//    memberRepository.findAll().forEach(this::printMember);
+//    memberRepository.findFetchJoinAll().forEach(this::printMember);
+//    memberRepository.findMemberEntityGraphAll().forEach(this::printMember);
+//    memberRepository.findMemberNamedEntityGraphAll().forEach(this::printMember);
+    memberRepository.findMemberEntityGraphByUsername("member1").forEach(this::printMember);
+  }
+
+
+  private void printMember(Member member) {
+    System.out.println("member = " + member);
+    System.out.println("member.teamClass = " + member.getTeam().getClass());
+    System.out.println("member.team = " + member.getTeam().getName());
   }
 
 }
