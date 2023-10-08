@@ -32,6 +32,9 @@ class MemberRepositoryTest {
   @Autowired
   TeamRepository teamRepository;
 
+  @Autowired
+  MemberQueryRepository memberQueryRepository;
+
   @PersistenceContext
   EntityManager em;
 
@@ -309,6 +312,17 @@ class MemberRepositoryTest {
     System.out.println("member = " + member);
     System.out.println("member.teamClass = " + member.getTeam().getClass());
     System.out.println("member.team = " + member.getTeam().getName());
+  }
+
+  @Test
+  void customQuery() {
+    memberRepository.findMemberCustom();
+  }
+
+
+  @Test
+  void MemberQueryRepository_customQuery() {
+    memberQueryRepository.findMemberCustomQuery();
   }
 
 }
