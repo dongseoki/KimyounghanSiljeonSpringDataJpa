@@ -15,6 +15,12 @@ public class KimyounghanSiljeonSpringDataJpaApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(KimyounghanSiljeonSpringDataJpaApplication.class, args);
+//		AuditorAware<String> auditorAware = new AuditorAware<String>() {
+//			@Override
+//			public Optional<String> getCurrentAuditor() {
+//				return Optional.of(UUID.randomUUID().toString());
+//			}
+//		};
 	}
 
 	@Bean
